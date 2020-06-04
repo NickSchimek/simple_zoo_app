@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_04_130737) do
+ActiveRecord::Schema.define(version: 2020_06_04_134412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(version: 2020_06_04_130737) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "animals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "bio"
+    t.uuid "zoo_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["zoo_id"], name: "index_animals_on_zoo_id"
+  end
+
   create_table "zoos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "address"
@@ -45,4 +54,5 @@ ActiveRecord::Schema.define(version: 2020_06_04_130737) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "animals", "zoos"
 end
