@@ -6,7 +6,7 @@ class AnimalsController < ApplicationController
   # GET /animals
   # GET /animals.json
   def index
-    @animals = Animal.all
+    @animals = Animal.all.where(zoo_id: @zoo.id)
   end
 
   # GET /animals/1
@@ -75,6 +75,6 @@ class AnimalsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def animal_params
-      params.require(:animal).permit(:name, :bio, :tags, :zoo_id)
+      params.require(:animal).permit(:name, :bio, :tags, :zoo_id, :image)
     end
 end

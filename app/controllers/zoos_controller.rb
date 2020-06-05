@@ -69,6 +69,6 @@ class ZoosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def zoo_params
-      params.require(:zoo).permit(:name, :address)
+      params.require(:zoo).permit(:name, :address, :image)
     end
 end

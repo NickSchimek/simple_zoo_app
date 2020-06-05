@@ -10,7 +10,11 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
+    <nav>
+      <%= link_to 'Home', root_path %>
+      <%= link_to 'Sign In', user_session_path, class: "link hover-blue dib pa2 f6 f5-l" unless current_user %>
+      <%= link_to 'Sign Out', destroy_user_session_path, class: "link hover-blue dib pa2 f6 f5-l", method: :delete if current_user %>
+    </nav>
     <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>

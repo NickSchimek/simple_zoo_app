@@ -23,7 +23,12 @@
 
   <div class="field">
     <%= form.label :zoo_id %>
-    <%= form.text_field :zoo_id %>
+    <%= form.hidden_field :zoo_id, value: zoo.id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image %>
+    <%= form.file_field :image %>
   </div>
 
   <div class="actions">

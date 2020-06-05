@@ -5,10 +5,23 @@
   <%= @zoo.name %>
 </p>
 
+<% if @zoo.image.attached? %>
+  <%= image_tag(@zoo.image) %>
+<% end %>
+
 <p>
   <strong>Address:</strong>
   <%= @zoo.address %>
 </p>
 
+<iframe
+  width="600"
+  height="450"
+  frameborder="0" style="border:0"
+  src=<%= "https://www.google.com/maps/embed/v1/place?key=#{ENV['GMAP_API_KEY']}&q=#{ERB::Util.u(@zoo.address)}" %> allowfullscreen>
+</iframe>
+
+<br>
 <%= link_to 'Edit', edit_zoo_path(@zoo) %> |
+<%= link_to 'Animals', zoo_animals_path(@zoo) %> |
 <%= link_to 'Back', zoos_path %>

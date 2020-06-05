@@ -17,7 +17,7 @@
       <tr>
         <td><%= animal.name %></td>
         <td><%= animal.bio %></td>
-        <td><%= animal.zoo_id %></td>
+        <td><%= @zoo.name %></td>
         <td><%= link_to 'Show', [@zoo, animal] %></td>
         <td><%= link_to 'Edit', edit_zoo_animal_path(@zoo, animal) %></td>
         <td><%= link_to 'Destroy', [@zoo, animal], method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -5,6 +5,10 @@
   <%= @animal.name %>
 </p>
 
+<% if @animal.image.attached? %>
+  <%= image_tag(@animal.image) %>
+<% end %>
+
 <p>
   <strong>Bio:</strong>
   <%= @animal.bio %>
@@ -12,7 +16,7 @@
 
 <p>
   <strong>Zoo:</strong>
-  <%= @animal.zoo_id %>
+  <%= @zoo.name %>
 </p>
 
 <%= link_to 'Edit', edit_zoo_animal_path(@zoo, @animal) %> |
