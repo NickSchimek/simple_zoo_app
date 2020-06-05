@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'zoos#index'
   resources :zoos do
     resources :animals

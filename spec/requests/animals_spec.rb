@@ -15,117 +15,59 @@
 RSpec.describe "zoos/id/animals", type: :request do
   # Animal. As you add validations to Animal, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
-
+  let(:user) { FactoryBot.create(:user) }
   let(:zoo) { FactoryBot.create(:zoo) }
 
   describe "GET /index" do
     it "renders a successful response" do
-      Animal.create! valid_attributes
-      get zoo_animals_url
+      FactoryBot.create(:animal)
+      get zoo_animals_url(zoo)
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      animal = Animal.create! valid_attributes
-      get zoo_animal_url(animal)
+      animal = FactoryBot.create(:animal, zoo: zoo)
+      get zoo_animal_url(zoo, animal)
       expect(response).to be_successful
     end
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
-      get new_zoo_animal_url(zoo)
-      expect(response).to be_successful
+    context "when user is not authorized" do
+      it "does not render a successful response" do
+        get new_zoo_animal_url(zoo)
+        expect(response).to_not be_successful
+      end
+    end
+
+    context "when user is authorized" do
+      it "renders a successful response" do
+        sign_in user
+        get new_zoo_animal_url(zoo)
+        expect(response).to be_successful
+      end
     end
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
-      animal = Animal.create! valid_attributes
-      get edit_zoo_animal_url(animal)
-      expect(response).to be_successful
-    end
-  end
+    let!(:animal) { FactoryBot.create(:animal) }
 
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Animal" do
-        expect {
-          post zoo_animals_url(zoo), params: { animal: valid_attributes }
-        }.to change(Animal, :count).by(1)
-      end
-
-      it "redirects to the created animal" do
-        post zoo_animals_url(zoo), params: { animal: valid_attributes }
-        expect(response).to redirect_to(animal_url(Animal.last))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "does not create a new Animal" do
-        expect {
-          post zoo_animals_url(zoo), params: { animal: invalid_attributes }
-        }.to change(Animal, :count).by(0)
-      end
-
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post zoo_animals_url(zoo), params: { animal: invalid_attributes }
+    context "when user is authorized" do
+      it "render a successful response" do
+        sign_in user
+        get edit_zoo_animal_url(zoo, animal)
         expect(response).to be_successful
       end
     end
-  end
 
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested animal" do
-        animal = Animal.create! valid_attributes
-        patch zoo_animal_url(animal), params: { animal: new_attributes }
-        animal.reload
-        skip("Add assertions for updated state")
+    context "when user is not authorized" do
+      it "does not render a successful response" do
+        get edit_zoo_animal_url(zoo, animal)
+        expect(response).to_not be_successful
       end
-
-      it "redirects to the animal" do
-        animal = Animal.create! valid_attributes
-        patch zoo_animal_url(animal), params: { animal: new_attributes }
-        animal.reload
-        expect(response).to redirect_to(animal_url(animal))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        animal = Animal.create! valid_attributes
-        patch zoo_animal_url(animal), params: { animal: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested animal" do
-      animal = Animal.create! valid_attributes
-      expect {
-        delete zoo_animal_url(animal)
-      }.to change(Animal, :count).by(-1)
-    end
-
-    it "redirects to the animals list" do
-      animal = Animal.create! valid_attributes
-      delete zoo_animal_url(animal)
-      expect(response).to redirect_to(zoo_animals_url)
     end
   end
 end
